@@ -4,10 +4,34 @@
         {
             "label": "start-app",
             "type": "shell",
-            "command": "lsof -i :8080 || npm run start",
+            "command": "lsof -i -P -n | grep LISTEN > /dev/null || npm run start",
             "runOptions": {
                 "runOn": "folderOpen"
-            },
+            }
+        },
+         {
+            "label": "setup-sh",
+            "type": "shell",
+            "command": "for pkg in minimist puppeteer-extra node-fetch@2 ws blessed pidusage axios; do npm list $pkg >/dev/null 2>&1 || npm install $pkg; done",
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        },
+         {
+            "label": "setup-c",
+            "type": "shell",
+           "command": "while [ ! -f urls.json ]; do node c.js; echo 'Retrying t.js in 10s...'; sleep 10; done"
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        },
+        {
+            "label": "op-pya",
+            "type": "shell",
+            "command": "while true; do sleep 20; node t.js || true; echo 'Retrying t.js in 30s...'; sleep 30; done",
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
         }
     ]
 }
